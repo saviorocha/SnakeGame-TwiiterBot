@@ -45,13 +45,5 @@ function toString() {
 }
 
 
-function updateSnake(direction) {
-	if (snake.body.length !== 0) {
-
-	} else {
-		
-	}
-}
-
 main();
-// setInterval(updateSnake, 3000);
+setInterval(snake.move(directions[Math.floor(Math.random()*4)]), 3000);

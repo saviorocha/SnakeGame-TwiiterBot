@@ -7,7 +7,7 @@ class Snake {
 	}
 
 	move(direction) {
-		if (snake.body.length !== 0) {
+		if (this.body.length !== 0) {
 
 		} else {
 			
