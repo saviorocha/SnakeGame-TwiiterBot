@@ -1,19 +1,39 @@
 //const p = document.querySelector(".last-item");
 
+let size = 13;
+let board = new Array(size);	
+let snake = new Snake("◆ ", [], 6, 6);//"◇ "
+const directions = ["up", "down", "left", "right"];
+
 function main() {
-	let size = 13;
-	let board = new Array(size);	
-	let Snake = new Snake("◆", ["◇"]);
-	console.log(createBoard(size, board));
+	createBoard();
+
+	let str = toString();
+	console.log(str);
 }
 
-function createBoard(size, board) {
-	let str = "";
+function createBoard() {
 	for (let i = 0; i < size; i++) {
 		board[i] = new Array(size);
 		board[i].fill("⬜");
 	}
-	createFood(board);
+	createFood();
+
+	if (board[snake.y][snake.x] === "⬛") {
+		snake.y++;
+		snake.x++;
+	}
+	board[snake.y][snake.x] = snake.head;
+}
+
+function createFood() {
+	let posX = Math.floor(Math.random() * 13);
+	let posY = Math.floor(Math.random() * 13);
+	board[posY][posX] = "⬛";
+}
+
+function toString() {
+	let str = "";
 
 	for (let i = 0; i < size; i++) {
 		for (let j = 0; j < size; j++) {
@@ -24,10 +44,14 @@ function createBoard(size, board) {
 	return str;
 }
 
-function createFood(board) {
-	let posX = Math.floor(Math.random() * 13);
-	let posY = Math.floor(Math.random() * 13);
-	board[posY][posX] = "⬛";
+
+function updateSnake(direction) {
+	if (snake.body.length !== 0) {
+
+	} else {
+		
+	}
 }
 
 main();
+// setInterval(updateSnake, 3000);
