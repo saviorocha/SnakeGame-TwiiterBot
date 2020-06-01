@@ -10,11 +10,14 @@ const directions = ["up", "down", "left", "right"];
 function setup() {
 	snake.add(6, 6);
 	createBoard();
+	board[snake.head.y][snake.head.x] = snake.head.value;
+	snakeX[0] = snake.head.x;
+	snakeY[0] = snake.head.y;
 	createFood();
 }
 
 function run() {
-	console.log("----------------------");
+	// console.log("----------------------");
 	snake.move(directions[Math.floor(Math.random() * 4)]);
 	updateSnake(snake.head);
 	console.log(toString());
@@ -25,28 +28,31 @@ function createBoard() {
 		board[i] = new Array(size);
 		board[i].fill("⬜");
 	}
-
-	if (board[snake.head.y][snake.head.x] === "⬛") {
-		snake.head.y++;
-		snake.head.x++;
-	}
-	board[snake.head.y][snake.head.x] = snake.head.value;
-	snakeX[0] = snake.head.x;
-	snakeY[0] = snake.head.y;
 }
 
 function createFood() {
 	let posX = Math.floor(Math.random() * 13);
 	let posY = Math.floor(Math.random() * 13);
-	board[posY][posX] = "⬛";
+	if (!checkFood(posY, posX))
+		board[posY][posX] = "⬛";
+	else
+		createFood();
 }
 
 function updateSnake(node) {
+	if (board[node.y][node.x] === "⬛") {
+		createFood();
+		snake.add(node.y, node.x);
+	}
 	board[node.y][node.x] = node.value;
 	board[snakeY[0]][snakeX[0]] = "⬜";
 	snakeX[0] = node.x;
 	snakeY[0] = node.y;
 	// console.log(snakeY[0], snakeX[0])
+}
+
+function checkFood(x, y) {
+	return board[y][x] === "⬛";
 }
 
 function toString() {
