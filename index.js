@@ -1,13 +1,14 @@
 //const p = document.querySelector(".last-item");
-
+// ◆
+// ◇
 let size = 13;
 let board = new Array(size);	
-let snake = new Snake("◆ ", [], 6, 6);//"◇ "
+let snake = new Snake();
 const directions = ["up", "down", "left", "right"];
 
 function main() {
+	snake.add();
 	createBoard();
-
 	let str = toString();
 	console.log(str);
 }
@@ -46,4 +47,4 @@ function toString() {
 
 
 main();
-setInterval(snake.move(directions[Math.floor(Math.random()*4)]), 3000);
+setInterval(snake.move(directions[Math.floor(Math.random() * 4)]), 3000);
