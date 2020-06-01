@@ -3,9 +3,10 @@
 // ◇
 let size = 13;
 let snakeX = [], snakeY = [];
+const directions = ["up", "down", "left", "right"];
+
 let board = new Array(size);	
 let snake = new Snake();
-const directions = ["up", "down", "left", "right"];
 
 function setup() {
 	snake.add(6, 6);
@@ -33,10 +34,12 @@ function createBoard() {
 function createFood() {
 	let posX = Math.floor(Math.random() * 13);
 	let posY = Math.floor(Math.random() * 13);
-	if (!checkFood(posY, posX))
+	if (!checkFood(posY, posX)) {
 		board[posY][posX] = "⬛";
-	else
+		return;
+	} else {
 		createFood();
+	}
 }
 
 function updateSnake(node) {
