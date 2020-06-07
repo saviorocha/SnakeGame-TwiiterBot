@@ -22,10 +22,10 @@ class Snake {
 		} else {//só a cabeça
 			switch (direction) {
 				case "up":
-					this.head.y++;
+					this.head.y--;
 					break;
 				case "down":
-					this.head.y--;
+					this.head.y++;
 					break;
 				case "left":
 					this.head.x--;

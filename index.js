@@ -3,6 +3,8 @@
 // ◇
 let size = 13;
 let snakeX = [], snakeY = [];
+let currentDirection;
+let count = 0;
 const directions = ["up", "down", "left", "right"];
 
 let board = new Array(size);	
@@ -19,7 +21,11 @@ function setup() {
 
 function run() {
 	// console.log("----------------------");
-	snake.move(directions[Math.floor(Math.random() * 4)]);
+	if (count % 3 == 0) {
+		currentDirection = directions[Math.floor(Math.random() * 4)];
+	}
+	count++;
+	snake.move(currentDirection);
 	updateSnake(snake.head);
 	console.log(toString());
 }
@@ -43,14 +49,23 @@ function createFood() {
 }
 
 function updateSnake(node) {
-	if (board[node.y][node.x] === "⬛") {
-		createFood();
-		snake.add(node.y, node.x);
+	if (node.y > 13 || node.x > 13) {
+		console.log('you lost');
+		clearInterval(intervalID);
+	} else {
+		try {
+			if (board[node.y][node.x] === "⬛") { // comeu a comida
+				createFood();
+				snake.add(node.y, node.x);
+			}
+			board[node.y][node.x] = node.value;
+			board[snakeY[0]][snakeX[0]] = "⬜";
+			snakeX[0] = node.x;
+			snakeY[0] = node.y;
+		} catch (error) {
+			clearInterval(intervalID);
+		}
 	}
-	board[node.y][node.x] = node.value;
-	board[snakeY[0]][snakeX[0]] = "⬜";
-	snakeX[0] = node.x;
-	snakeY[0] = node.y;
 	// console.log(snakeY[0], snakeX[0])
 }
 
@@ -71,4 +86,4 @@ function toString() {
 }
 
 setup();
-console.log(setInterval(run, 1000));
+const intervalID = setInterval(run, 1000);
