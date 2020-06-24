@@ -2,7 +2,7 @@
 // ◆
 // ◇
 let size = 13;
-let snakeX = [], snakeY = [];
+let snakeX = [], snakeY = []; // vetores com as posições X e Y de cada nó da cobra
 let currentDirection;
 let count = 0;
 const directions = ["up", "down", "left", "right"];
@@ -10,8 +10,16 @@ const directions = ["up", "down", "left", "right"];
 let board = new Array(size);	
 let snake = new Snake();
 
+init();
+
+
+function init() {	
+	setup();
+	const intervalID = setInterval(run, 1000);
+}
+
 function setup() {
-	snake.add(6, 6);
+	snake.add(6, 6); // adiciona a cabeça da cobra
 	createBoard();
 	board[snake.head.y][snake.head.x] = snake.head.value;
 	snakeX[0] = snake.head.x;
@@ -19,18 +27,8 @@ function setup() {
 	createFood();
 }
 
-function run() {
-	// console.log("----------------------");
-	if (count % 3 == 0) {
-		currentDirection = directions[Math.floor(Math.random() * 4)];
-	}
-	count++;
-	snake.move(currentDirection);
-	updateSnake(snake.head);
-	console.log(toString());
-}
-
 function createBoard() {
+	// cria a matriz do jogo
 	for (let i = 0; i < size; i++) {
 		board[i] = new Array(size);
 		board[i].fill("⬜");
@@ -38,9 +36,13 @@ function createBoard() {
 }
 
 function createFood() {
+	// adiciona a comida em uma casa aleatória
 	let posX = Math.floor(Math.random() * 13);
 	let posY = Math.floor(Math.random() * 13);
-	if (!checkFood(posY, posX)) {
+
+	// verifica se a casa escolhida não está ocupada
+	// por uma das partes da cobra
+	if (!checkFood(posY, posX)) { 
 		board[posY][posX] = "⬛";
 		return;
 	} else {
@@ -48,9 +50,20 @@ function createFood() {
 	}
 }
 
+function run() {
+	// console.log("----------------------");
+	if (count % 3 == 0) { // muda de direção a cada três "turnos"
+		currentDirection = directions[Math.floor(Math.random() * 4)]; // escolhe uma posição aleatória
+	}
+	count++;
+	snake.move(currentDirection); // calcula a posição X e Y de cada nó da cobra
+	updateSnake(snake.head); // atualiza a posição de cada nó da cobra no jogo
+	console.log(toString());
+}
+
 function updateSnake(node) {
-	if (node.y > 13 || node.x > 13) {
-		console.log('you lost');
+	if (node.y > 13 || node.x > 13) { // se tiver batido em uma das paredes
+		console.log('perdeu mané');
 		clearInterval(intervalID);
 	} else {
 		try {
@@ -84,6 +97,3 @@ function toString() {
 	}
 	return str;
 }
-
-setup();
-const intervalID = setInterval(run, 1000);
