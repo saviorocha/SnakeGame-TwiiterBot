@@ -7,11 +7,10 @@ let currentDirection;
 let count = 0;
 const directions = ["up", "down", "left", "right"];
 
-let board = new Array(size);	
+let game = new Array(size);	
 let snake = new Snake();
 
 init();
-
 
 function init() {	
 	setup();
@@ -20,18 +19,18 @@ function init() {
 
 function setup() {
 	snake.add(6, 6); // adiciona a cabeça da cobra
-	createBoard();
-	board[snake.head.y][snake.head.x] = snake.head.value;
+	createGame();
+	game[snake.head.y][snake.head.x] = snake.head.value;
 	snakeX[0] = snake.head.x;
 	snakeY[0] = snake.head.y;
 	createFood();
 }
 
-function createBoard() {
+function createGame() {
 	// cria a matriz do jogo
 	for (let i = 0; i < size; i++) {
-		board[i] = new Array(size);
-		board[i].fill("⬜");
+		game[i] = new Array(size);
+		game[i].fill("⬜");
 	}
 }
 
@@ -43,7 +42,7 @@ function createFood() {
 	// verifica se a casa escolhida não está ocupada
 	// por uma das partes da cobra
 	if (!checkFood(posY, posX)) { 
-		board[posY][posX] = "⬛";
+		game[posY][posX] = "⬛";
 		return;
 	} else {
 		createFood();
@@ -58,23 +57,30 @@ function run() {
 	count++;
 	snake.move(currentDirection); // calcula a posição X e Y de cada nó da cobra
 	updateSnake(snake.head); // atualiza a posição de cada nó da cobra no jogo
-	console.log(toString());
+	console.log(toString()); // cria o jogo para ser imprimido 
 }
 
-function updateSnake(node) {
-	if (node.y > 13 || node.x > 13) { // se tiver batido em uma das paredes
+function updateSnake(head) {
+	if (head.y > 13 || head.x > 13) { // se tiver batido em uma das paredes
 		console.log('perdeu mané');
 		clearInterval(intervalID);
 	} else {
 		try {
-			if (board[node.y][node.x] === "⬛") { // comeu a comida
+			createGame(); // reconstrói o jogo
+			if (checkFood(head.y, head.x)) { // se comeu a comida
 				createFood();
-				snake.add(node.y, node.x);
+				snake.add(head.y, head.x);
 			}
-			board[node.y][node.x] = node.value;
-			board[snakeY[0]][snakeX[0]] = "⬜";
-			snakeX[0] = node.x;
-			snakeY[0] = node.y;
+			game[head.y][head.x] = head.value;
+			for (let i = 0; i < snakeY.length; i++) {
+				for (let j = 0; j < snakeX.length; j++) {
+					game[snakeY[i]][snakeX[j]] = "◇";
+				}
+			}
+			// game[head.y][head.x] = head.value;
+			// game[snakeY[0]][snakeX[0]] = "⬜";
+			// snakeX[0] = head.x;
+			// snakeY[0] = head.y;
 		} catch (error) {
 			clearInterval(intervalID);
 		}
@@ -83,7 +89,7 @@ function updateSnake(node) {
 }
 
 function checkFood(x, y) {
-	return board[y][x] === "⬛";
+	return game[y][x] === "⬛";
 }
 
 function toString() {
@@ -91,7 +97,7 @@ function toString() {
 
 	for (let i = 0; i < size; i++) {
 		for (let j = 0; j < size; j++) {
-			str += board[i][j] + " " ;
+			str += game[i][j] + " " ;
 			if (j === size - 1) { str += "\n"; }
 		}
 	}

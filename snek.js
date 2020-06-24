@@ -1,3 +1,5 @@
+let lastNode;
+
 class Node {
 	constructor(x, y) {
 		this.next = null;
@@ -17,27 +19,45 @@ class Snake {
 
 	move(direction) {
 		
-		if (this.length > 1) {
-			
-		} else {//só a cabeça
-			switch (direction) {
-				case "up":
-					this.head.y--;
-					break;
-				case "down":
-					this.head.y++;
-					break;
-				case "left":
-					this.head.x--;
-					break;
-				case "right":
-					this.head.x++;
-					break;
-				default:
-					console.error("deu uns erro no switch case");
-					break;
-			}
+		switch (direction) {
+			case "up":
+				this.head.y--;
+				break;
+			case "down":
+				this.head.y++;
+				break;
+			case "left":
+				this.head.x--;
+				break;
+			case "right":
+				this.head.x++;
+				break;
+			default:
+				console.error("deu uns erro no switch case");
+				break;
 		}
+
+		// if (this.length > 1) {
+			
+		// } else {//só a cabeça
+		// 	switch (direction) {
+		// 		case "up":
+		// 			this.head.y--;
+		// 			break;
+		// 		case "down":
+		// 			this.head.y++;
+		// 			break;
+		// 		case "left":
+		// 			this.head.x--;
+		// 			break;
+		// 		case "right":
+		// 			this.head.x++;
+		// 			break;
+		// 		default:
+		// 			console.error("deu uns erro no switch case");
+		// 			break;
+		// 	}
+		// }
 	}
 
 	add(x, y) {
