@@ -1,0 +1,19 @@
+{
+  "name": "twittersnakebot",
+  "version": "1.0.0",
+  "description": "Snake game for a twitter bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saviorocha/SnakeGame-TwiiterBot.git"
+  },
+  "author": "Sávio de Melo Rocha",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/saviorocha/SnakeGame-TwiiterBot/issues"
+  },
+  "homepage": "https://github.com/saviorocha/SnakeGame-TwiiterBot#readme"
+}

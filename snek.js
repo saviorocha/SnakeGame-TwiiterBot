@@ -1,11 +1,15 @@
+// implementação de uma lista duplamente encadeada
+// baseado no exemplo em: https://reactgo.com/javascript-double-linked-list-implementation/
+
 let lastNode;
 
 class Node {
 	constructor(x, y) {
 		this.next = null;
-		this.value = "";
+		this.prev = null;
 		this.x = x;
 		this.y = y;
+		this.value = "◆ ";
 	}
 }
 
@@ -13,12 +17,32 @@ class Snake {
 	constructor() {
 		// this.head = head;
 		// this.body = body;
-		this.length = 0;
+		this.length = null;
 		this.head = null;
+		this.tail = null;
 	}
 
 	move(direction) {
 		
+		let currentNode = this.head;
+		// let tempX, tempY;
+		
+		while (currentNode.next) {
+			/*
+			tempX = currentNode.x
+			tempY = currentNode.y
+			
+			currentNode = currentNode.next;
+
+			currentNode.x = tempX;
+			currentNode.y = tempY;
+			*/
+
+			currentNode.next.y = currentNode.y;
+			currentNode.next.x = currentNode.x;
+			currentNode = currentNode.next;
+		}
+
 		switch (direction) {
 			case "up":
 				this.head.y--;
@@ -36,28 +60,21 @@ class Snake {
 				console.error("deu uns erro no switch case");
 				break;
 		}
+	}
 
-		// if (this.length > 1) {
-			
-		// } else {//só a cabeça
-		// 	switch (direction) {
-		// 		case "up":
-		// 			this.head.y--;
-		// 			break;
-		// 		case "down":
-		// 			this.head.y++;
-		// 			break;
-		// 		case "left":
-		// 			this.head.x--;
-		// 			break;
-		// 		case "right":
-		// 			this.head.x++;
-		// 			break;
-		// 		default:
-		// 			console.error("deu uns erro no switch case");
-		// 			break;
-		// 	}
-		// }
+	// adiciona um nó no fim da lista
+	push(x, y) {
+		const node = new Node(x, y);
+
+		if (!this.head) { // lista vazia
+			this.head = node;
+			this.tail = node;
+		} else {
+			node.prev = this.tail
+			this.tail.next = node;
+			this.tail = node;
+		}
+		this.length++;
 	}
 
 	add(x, y) {
@@ -75,6 +92,7 @@ class Snake {
 			return node;
 		}
 
+		// adiciona o nó no fim da lista
 		while (currentNode.next) {
 			currentNode = currentNode.next;
 		}

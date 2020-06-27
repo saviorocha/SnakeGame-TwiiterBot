@@ -14,15 +14,16 @@ init();
 
 function init() {	
 	setup();
-	const intervalID = setInterval(run, 1000);
+	// const intervalID = setInterval(run, 1000);
+	console.log(setInterval(run, 1000));
 }
 
 function setup() {
-	snake.add(6, 6); // adiciona a cabeça da cobra
+	snake.push(6, 6); // adiciona a cabeça da cobra
 	createGame();
-	game[snake.head.y][snake.head.x] = snake.head.value;
-	snakeX[0] = snake.head.x;
-	snakeY[0] = snake.head.y;
+	game[snake.head.y][snake.head.x] = snake.head.value; //adiciona a cobra ao jogo
+	// snakeX[0] = snake.head.x;
+	// snakeY[0] = snake.head.y;
 	createFood();
 }
 
@@ -56,12 +57,12 @@ function run() {
 	}
 	count++;
 	snake.move(currentDirection); // calcula a posição X e Y de cada nó da cobra
-	updateSnake(snake.head); // atualiza a posição de cada nó da cobra no jogo
+	updateSnake(snake.head, game); // atualiza a posição de cada nó da cobra no jogo
 	console.log(toString()); // cria o jogo para ser imprimido 
 }
 
 function updateSnake(head) {
-	if (head.y > 13 || head.x > 13) { // se tiver batido em uma das paredes
+	if (head.y > 13 || head.x > 13) { // se tiver passado da borda
 		console.log('perdeu mané');
 		clearInterval(intervalID);
 	} else {
@@ -69,14 +70,20 @@ function updateSnake(head) {
 			createGame(); // reconstrói o jogo
 			if (checkFood(head.y, head.x)) { // se comeu a comida
 				createFood();
-				snake.add(head.y, head.x);
+				snake.push(head.y, head.x);
 			}
-			game[head.y][head.x] = head.value;
-			for (let i = 0; i < snakeY.length; i++) {
-				for (let j = 0; j < snakeX.length; j++) {
-					game[snakeY[i]][snakeX[j]] = "◇";
-				}
+			
+			let currentNode = this.head;
+			
+			while (currentNode.next) {
+				currentNode = currentNode.next;
 			}
+			// for (let i = 0; i < snakeY.length; i++) {
+			// 	for (let j = 0; j < snakeX.length; j++) {
+			// 		game[snakeY[i]][snakeX[j]] = "◇"; // adiciona a posição atualizada dos nós da cobra
+			// 	}
+			// }
+			
 			// game[head.y][head.x] = head.value;
 			// game[snakeY[0]][snakeX[0]] = "⬜";
 			// snakeX[0] = head.x;
