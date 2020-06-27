@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/saviorocha/SnakeGame-TwiiterBot/issues"
   },
-  "homepage": "https://github.com/saviorocha/SnakeGame-TwiiterBot#readme"
+  "homepage": "https://github.com/saviorocha/SnakeGame-TwiiterBot#readme",
+  "dependencies": {
+    "collections": "^5.1.11"
+  }
 }
