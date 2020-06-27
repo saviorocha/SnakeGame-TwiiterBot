@@ -22,7 +22,7 @@ class Snake {
 		this.tail = null;
 	}
 
-	move(direction) {
+	move(direction, game) {
 		
 		let currentNode = this.head;
 		// let tempX, tempY;
@@ -38,28 +38,45 @@ class Snake {
 			currentNode.y = tempY;
 			*/
 
+			// passa o x e y de cada nó para o nó anterior em cadeia, para movimentar a cobra 
 			currentNode.next.y = currentNode.y;
 			currentNode.next.x = currentNode.x;
 			currentNode = currentNode.next;
 		}
 
-		switch (direction) {
-			case "up":
-				this.head.y--;
-				break;
-			case "down":
-				this.head.y++;
-				break;
-			case "left":
-				this.head.x--;
-				break;
-			case "right":
-				this.head.x++;
-				break;
-			default:
-				console.error("deu uns erro no switch case");
-				break;
+		if (direction === 1) {
+			this.head.y += 1;
+		} else if (direction === 2) {
+			this.head.y -= 1;
+		} else if (direction === 3) {
+			this.head.x += 1;
+		} else {
+			this.head.y -= 1;
 		}
+
+		// if (direction - 10 === 1) {
+		// 	this.head.x += direction % 10;
+		// } else if (direction - 10 === 2) {
+		// 	this.head.y += direction % 10
+		// }
+
+		// switch (direction) {
+		// 	case "up":
+		// 		this.head.y--;
+		// 		break;
+		// 	case "down":
+		// 		this.head.y++;
+		// 		break;
+		// 	case "left":
+		// 		this.head.x--;
+		// 		break;
+		// 	case "right":
+		// 		this.head.x++;
+		// 		break;
+		// 	default:
+		// 		console.error("deu uns erro no switch case");
+		// 		break;
+		// }
 	}
 
 	// adiciona um nó no fim da lista

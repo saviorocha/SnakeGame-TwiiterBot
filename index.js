@@ -5,7 +5,9 @@ let size = 13;
 let snakeX = [], snakeY = []; // vetores com as posições X e Y de cada nó da cobra
 let currentDirection;
 let count = 0;
-const directions = ["up", "down", "left", "right"];
+// const directions = ["up", "down", "left", "right"];
+// const directions = [11, -11, 21, -21];
+const directions = [1, 2, 3, 4]; // 1 cima, 2 baixo, 3 direita, 4 esquerda
 
 let game = new Array(size);	
 let snake = new Snake();
@@ -52,38 +54,30 @@ function createFood() {
 
 function run() {
 	// console.log("----------------------");
-	if (count % 3 == 0) { // muda de direção a cada três "turnos"
+	if (count % 3 === 0) { // muda de direção a cada três "turnos"
 		currentDirection = directions[Math.floor(Math.random() * 4)]; // escolhe uma posição aleatória
 	}
 	count++;
 	snake.move(currentDirection); // calcula a posição X e Y de cada nó da cobra
-	updateSnake(snake.head, game); // atualiza a posição de cada nó da cobra no jogo
+	updateSnake(snake.head, snake.tail); // atualiza a posição de cada nó da cobra no jogo
 	console.log(toString()); // cria o jogo para ser imprimido 
 }
 
-function updateSnake(head) {
+function updateSnake(head, tail) {
 	if (head.y > 13 || head.x > 13) { // se tiver passado da borda
 		console.log('perdeu mané');
 		clearInterval(intervalID);
 	} else {
 		try {
-			createGame(); // reconstrói o jogo
-			if (checkFood(head.y, head.x)) { // se comeu a comida
-				createFood();
-				snake.push(head.y, head.x);
-			}
-			
 			let currentNode = this.head;
+			createGame(); // reconstrói o jogo			
 			
 			while (currentNode.next) {
 				currentNode = currentNode.next;
+				game[currentNode.y][currentNode.x] = currentNode.value;
 			}
-			// for (let i = 0; i < snakeY.length; i++) {
-			// 	for (let j = 0; j < snakeX.length; j++) {
-			// 		game[snakeY[i]][snakeX[j]] = "◇"; // adiciona a posição atualizada dos nós da cobra
-			// 	}
-			// }
 			
+			eatFood()
 			// game[head.y][head.x] = head.value;
 			// game[snakeY[0]][snakeX[0]] = "⬜";
 			// snakeX[0] = head.x;
@@ -95,6 +89,40 @@ function updateSnake(head) {
 	// console.log(snakeY[0], snakeX[0])
 }
 
+function eatFood() {
+	
+	let newX, newY;
+
+	if (checkFood(head.x, head.y)) { // se comeu a comida
+		
+		// if (direction 10 - direction  1) {
+		// 	let newX += direction % 10;
+		// 	let newY = 0
+		// } else if (direction - 10 === 2) {
+		// 	let newY += direction % 10
+		// 	let newX = 0					
+		// }
+
+		if (direction === 1) {
+			newY = tail.y - 1
+			newX = tail.x;
+		} else if (direction === 2) {
+			newY = tail.y + 1;
+			newX = tail.x;			
+		} else if (direction === 3) {
+			newX = tail.x - 1;
+			newY = tail.y;					
+		} else {
+			newX = tail.x + 1;		
+			newY = tail.y;									
+		}
+
+		createFood(); // adiciona uma nova comida
+		snake.push(newX, newY); // adiciona um novo nó na cobra
+	}
+}
+
+// checa se uma da posição na matriz possui uma comida
 function checkFood(x, y) {
 	return game[y][x] === "⬛";
 }
