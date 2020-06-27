@@ -51,7 +51,7 @@ class Snake {
 		} else if (direction === 3) {
 			this.head.x += 1;
 		} else {
-			this.head.y -= 1;
+			this.head.x -= 1;
 		}
 
 		// if (direction - 10 === 1) {
