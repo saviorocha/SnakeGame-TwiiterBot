@@ -3,11 +3,8 @@
 let size = 13;
 let currentDirection;
 let count = 0;
-// const directions = ["up", "down", "left", "right"];
-// const directions = [11, -11, 21, -21];
-const directions = [1, 2, 3, 4]; // 1 cima, 2 baixo, 3 direita, 4 esquerda
-
 let foodX, foodY;
+const directions = [1, 2, 3, 4]; // 1 cima, 2 baixo, 3 direita, 4 esquerda
 
 let game = new Array(size);	
 let snake = new Snake();
@@ -35,9 +32,6 @@ function createFood() {
 	foodX = Math.floor(Math.random() * 13);
 	foodY = Math.floor(Math.random() * 13);
 
-	// foodX = 6;
-	// foodY = 6;
-
 	// verifica se a casa escolhida não está ocupada
 	// por uma das partes da cobra
 	if (!checkFood(foodY, foodX)) { 
@@ -49,14 +43,39 @@ function createFood() {
 }
 
 function run() {
-	// console.log("----------------------");
-	// if (count % 3 === 0) { // muda de direção a cada três "turnos"
-		currentDirection = directions[Math.floor(Math.random() * 4)]; // escolhe uma posição aleatória
+	if (count % 3 === 0) { // muda de direção a cada três "turnos"
+		let randNum = Math.random();
+		if (randNum < 0.5) {
+			currentDirection = directions[Math.floor(Math.random() * 4)]; // escolhe uma posição aleatória		
+		} else { 
+			//obs: procurar uma solução melhor pra isso depois, pra diminuir os if else
+			let stepx = ((foodX - snake.head.x) > 0) - ((foodX - snake.head.x) < 0); // retorna -1 se foodX - snake.head.x for negativo e 1 se for positivo
+			let stepy = ((foodY - snake.head.y) > 0) - ((foodY - snake.head.y) < 0);
+			let tempDirection = [];
+
+			if (stepx > 0) {
+				// direita
+				tempDirection.push(3);
+			} else if (stepx < 0) {
+				// esquerda
+				tempDirection.push(4);
+			}
+
+			if (stepy > 0) {
+				// cima
+				tempDirection.push(1);
+			} else if (stepy < 0) {
+				// baixo
+				tempDirection.push(2);
+			}
+			currentDirection = tempDirection[Math.floor(Math.random() * 2)]
+		}
 		console.log(currentDirection);
-	// }
-	// count++;
+	}
+	count++;
+	
 	snake.move(currentDirection); // calcula a posição X e Y de cada nó da cobra
-	updateGame(snake.head, snake.tail); // atualiza a posição de cada nó da cobra no jogo
+	updateGame(snake.head, snake.tail); // atualiza os dados do jogo
 	console.log(gameToString()); // cria o jogo para ser imprimido 
 }
 
@@ -67,19 +86,15 @@ function updateGame(head, tail) {
 	} else {
 		try {
 			createGame(); // reconstrói o jogo			
-			updateFood();
+			updateFood(); // atualiza a posição da comida no jogo
+
 			if (checkFood(head.x, head.y)) { // se comeu a comida
 			// if ((head.x === foodX) && (head.y === foodY)) {
-				console.log('comeu');
 				eatFood(tail);			
 			}
 
-			updateSnake(head);
+			updateSnake(head); // atualiza a posição de cada nó da cobra no jogo
 
-			// game[head.y][head.x] = head.value;
-			// game[snakeY[0]][snakeX[0]] = "⬜";
-			// snakeX[0] = head.x;
-			// snakeY[0] = head.y;
 		} catch (error) {
 			// console.error(error)
 			console.log(error);
@@ -105,6 +120,7 @@ function eatFood(tail) {
 	
 	let newX, newY;
 	
+	// calcula a posição do novo nó a ser adicionado 
 	if (currentDirection === 1) {
 		newY = tail.y - 1
 		newX = tail.x;
