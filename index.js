@@ -1,7 +1,7 @@
 // ◆
 // ◇
 let size = 13;
-let currentDirection;
+let currentDirection = 1;
 let count = 0;
 let foodX, foodY;
 const directions = [1, 2, 3, 4]; // 1 cima, 2 baixo, 3 direita, 4 esquerda
@@ -45,32 +45,37 @@ function createFood() {
 function run() {
 	if (count % 3 === 0) { // muda de direção a cada três "turnos"
 		let randNum = Math.random();
-		if (randNum < 0.5) {
-			currentDirection = directions[Math.floor(Math.random() * 4)]; // escolhe uma posição aleatória		
-		} else { 
+		let tempDirections = [];
+		let index = directions.indexOf(currentDirection);	
+
+
+		if (randNum < 0.5) { // escolhe uma direção aleatória 
+			index % 2 === 0 ? index = index + 1 : index = index - 1; // escolhe a direção contrária	
+			tempDirections = directions.splice(index, 1); // retira a direção contrária do vetor (e.g. se estiver indo pra cima, retira a possibilidade de ir pra baixo)
+			currentDirection = tempDirections[Math.floor(Math.random() * 3)]; 
+		} else { // escolhe uma direção que seja na direção da comida
 			//obs: procurar uma solução melhor pra isso depois, pra diminuir os if else
 			let stepx = ((foodX - snake.head.x) > 0) - ((foodX - snake.head.x) < 0); // retorna -1 se foodX - snake.head.x for negativo e 1 se for positivo
 			let stepy = ((foodY - snake.head.y) > 0) - ((foodY - snake.head.y) < 0);
-			let tempDirection = [];
 
 			if (stepx > 0) {
 				// direita
-				tempDirection.push(3);
+				tempDirections.push(3);
 			} else if (stepx < 0) {
 				// esquerda
-				tempDirection.push(4);
+				tempDirections.push(4);
 			}
 
 			if (stepy > 0) {
 				// cima
-				tempDirection.push(1);
+				tempDirections.push(1);
 			} else if (stepy < 0) {
 				// baixo
-				tempDirection.push(2);
+				tempDirections.push(2);
 			}
-			currentDirection = tempDirection[Math.floor(Math.random() * 2)]
+			currentDirection = tempDirections[Math.floor(Math.random() * 2)]
 		}
-		console.log(currentDirection);
+		console.log('direção: ', currentDirection);
 	}
 	count++;
 	
@@ -80,7 +85,8 @@ function run() {
 }
 
 function updateGame(head, tail) {
-	if (head.y > 13 || head.x > 13) { // se tiver passado da borda
+
+	if ((head.x > 13 || head.x < 0) || (head.y > 13 || head.y < 0)) { // se tiver passado da borda
 		console.log('perdeu mané');
 		clearInterval(intervalID);
 	} else {
